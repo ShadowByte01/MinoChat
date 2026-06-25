@@ -4,6 +4,7 @@ services:
     runtime: docker
     plan: free
     region: singapore
+    rootDir: render_server
     dockerfilePath: ./Dockerfile
     healthCheckPath: /health
     autoDeploy: true
