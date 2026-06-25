@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="mino_background">#FAF9F6</color>
+    <color name="mino_background_dark">#0F0E17</color>
+    <color name="mino_lavender">#A78BFA</color>
+    <color name="mino_mint">#6EE7B7</color>
+    <color name="mino_coral">#F87171</color>
+    <color name="mino_text">#1A1A2E</color>
+</resources>

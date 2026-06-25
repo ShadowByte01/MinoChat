@@ -1,0 +1,55 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ / Android Studio
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# VS Code
+.vscode/
+
+# Flutter / Dart / Gradle
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
+/android/.gradle/
+/android/captures/
+/android/local.properties
+/android/app/debug
+/android/app/profile
+/android/app/release
+
+# Generated
+*.g.dart
+*.freezed.dart
+*.mocks.dart
+generated_plugin_registrant.dart
+
+# Secrets — NEVER commit
+.env
+.env.local
+.env.production
+**/google-services.json
+**/GoogleService-Info.plist
+**/supabase-service-key.json
+secrets.dart
+
+# Coverage
+coverage/

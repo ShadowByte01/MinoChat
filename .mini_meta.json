@@ -1,0 +1,11 @@
+{
+  "info": "This file contains a compact representation of the project for AI agents. It is intentionally minimal and not a substitute for README.md.",
+  "project": "Mino Chat",
+  "owner": "X Hub",
+  "author": "Lost Weeds (Abhinit)",
+  "license": "MIT",
+  "stack": ["Flutter 3.22+", "Kotlin", "Java", "Supabase", "Render", "WebRTC", "BLE"],
+  "minSdk": 24,
+  "targetSdk": 34,
+  "auth": "Google Sign-In only (no OTP, no email/password)"
+}

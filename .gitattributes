@@ -1,0 +1,52 @@
+# Auto-detect text files and normalize line endings to LF on commit
+* text=auto eol=lf
+
+# Dart / Flutter
+*.dart text eol=lf
+*.yaml text eol=lf
+*.yml  text eol=lf
+*.json text eol=lf
+*.md   text eol=lf
+*.txt  text eol=lf
+*.toml text eol=lf
+*.arb  text eol=lf
+*.sql  text eol=lf
+
+# Kotlin / Java / Android
+*.kt   text eol=lf
+*.java text eol=lf
+*.xml  text eol=lf
+*.gradle text eol=lf
+*.properties text eol=lf
+*.pro  text eol=lf
+
+# JavaScript / Node (render_server)
+*.js   text eol=lf
+*.ts   text eol=lf
+*.tsx  text eol=lf
+
+# Shell scripts
+*.sh   text eol=lf
+
+# Dockerfile
+Dockerfile text eol=lf
+
+# Binary assets — do NOT normalize
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.ico  binary
+*.webp binary
+*.ttf  binary
+*.otf  binary
+*.woff binary
+*.woff2 binary
+*.mp3  binary
+*.mp4  binary
+*.ogg  binary
+*.aac  binary
+*.apk  binary
+*.aar  binary
+*.jar  binary
+*.keystore binary
