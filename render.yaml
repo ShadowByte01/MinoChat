@@ -1,12 +1,10 @@
 services:
   - type: web
     name: mino-signaling
-    runtime: node
+    runtime: docker
     plan: free
     region: singapore
-    rootDir: render_server
-    buildCommand: npm install --omit=dev
-    startCommand: node src/server.js
+    dockerfilePath: ./Dockerfile
     healthCheckPath: /health
     autoDeploy: true
     envVars:
