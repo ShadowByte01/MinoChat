@@ -1,6 +1,7 @@
 package com.xhub.minochat.ble
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothGatt

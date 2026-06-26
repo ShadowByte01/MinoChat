@@ -24,7 +24,7 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace "com.xhub.minochat"
-    compileSdk 34
+    compileSdk 36
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -50,7 +50,8 @@ android {
         versionName flutterVersionName
         multiDexEnabled true
         manifestPlaceholders += [
-            appAuthRedirectScheme: "mino-chat"
+            appAuthRedirectScheme: "mino-chat",
+            MAPS_API_KEY: ""
         ]
     }
 
@@ -114,5 +115,6 @@ dependencies {
     implementation "androidx.security:security-crypto:1.1.0-alpha06"
     implementation "com.google.android.gms:play-services-auth:21.2.0"
     implementation "com.google.android.gms:play-services-location:21.3.0"
-    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.0.4"
+    implementation "com.google.android.material:material:1.12.0"
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.1.4"
 }

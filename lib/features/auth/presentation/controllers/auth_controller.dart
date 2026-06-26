@@ -1,11 +1,12 @@
+import 'package:mino_chat/data/supabase/supabase_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import '../../core/constants/app_constants.dart';
-import '../../core/errors/failures.dart';
-import '../../core/utils/logger.dart';
-import '../../data/models/user_model.dart';
-import '../../data/repositories/supabase_repository.dart';
+import 'package:mino_chat/core/constants/app_constants.dart';
+import 'package:mino_chat/core/errors/failures.dart';
+import 'package:mino_chat/core/utils/logger.dart';
+import 'package:mino_chat/data/models/user_model.dart';
+import 'package:mino_chat/data/repositories/supabase_repository.dart';
 
 /// Google-only auth controller.
 /// No OTP, no email/password, no phone — just Google Sign-In.
@@ -27,24 +28,20 @@ class AuthController extends Notifier<AsyncValue<MinoUser?>> {
   Future<void> signInWithGoogle() async {
     state = const AsyncValue.loading();
     try {
-      final google = GoogleSignIn(
+      final google = GoogleSignIn.instance;
+      await google.initialize(
         serverClientId: Mino.googleWebClientId,
-        scopes: const ['email', 'profile', 'openid'],
       );
-      final account = await google.signIn();
-      if (account == null) {
-        state = const AsyncValue.data(null);
-        return;
-      }
+      final account = await google.authenticate(
+        scopeHint: const ['email', 'profile', 'openid'],
+      );
       final auth = await account.authentication;
       final idToken = auth.idToken;
-      final accessToken = auth.accessToken;
-      if (idToken == null || accessToken == null) {
+      if (idToken == null) {
         throw const AuthFailure('Google returned no idToken. Check OAuth client ID.');
       }
       final user = await _repo.signInWithGoogleIdToken(
         idToken: idToken,
-        accessToken: accessToken,
       );
       state = AsyncValue.data(user);
     } on AuthFailure {
@@ -62,7 +59,7 @@ class AuthController extends Notifier<AsyncValue<MinoUser?>> {
 
   Future<void> signOut() async {
     try {
-      await GoogleSignIn().signOut();
+      await GoogleSignIn.instance.disconnect();
     } catch (_) {}
     await _repo.signOut();
     state = const AsyncValue.data(null);

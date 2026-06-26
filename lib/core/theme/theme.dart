@@ -64,7 +64,7 @@ class MinoTheme {
           color: MinoColors.onBackground,
         ),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 0,
         color: MinoColors.surface,
         shape: RoundedRectangleBorder(
@@ -203,7 +203,7 @@ class MinoTheme {
           color: MinoColors.onSurfaceDark,
         ),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 0,
         color: MinoColors.surfaceDark,
         shape: RoundedRectangleBorder(

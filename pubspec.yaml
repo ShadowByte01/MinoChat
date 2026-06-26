@@ -144,17 +144,6 @@ flutter:
     - assets/icons/
     - assets/lottie/
     - assets/sounds/
-  fonts:
-    - family: PlusJakarta
-      fonts:
-        - asset: assets/fonts/PlusJakartaSans-Regular.ttf
-        - asset: assets/fonts/PlusJakartaSans-Medium.ttf
-          weight: 500
-        - asset: assets/fonts/PlusJakartaSans-SemiBold.ttf
-          weight: 600
-        - asset: assets/fonts/PlusJakartaSans-Bold.ttf
-          weight: 700
-
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: false

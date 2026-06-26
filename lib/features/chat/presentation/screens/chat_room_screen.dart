@@ -9,16 +9,16 @@ import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/theme/colors.dart';
-import '../../../core/utils/file_utils.dart';
-import '../../../core/utils/logger.dart';
-import '../../../core/utils/time.dart';
-import '../../../data/models/message_model.dart';
-import '../../../data/repositories/supabase_repository.dart';
-import '../../auth/presentation/controllers/auth_controller.dart';
+import 'package:mino_chat/core/theme/colors.dart';
+import 'package:mino_chat/core/utils/file_utils.dart';
+import 'package:mino_chat/core/utils/logger.dart';
+import 'package:mino_chat/core/utils/time.dart';
+import 'package:mino_chat/data/models/message_model.dart';
+import 'package:mino_chat/data/repositories/supabase_repository.dart';
+import 'package:mino_chat/features/auth/presentation/controllers/auth_controller.dart';
 import '../controllers/chat_controller.dart';
 import '../widgets/message_bubble.dart';
-import '../../voice/presentation/widgets/voice_recorder_bar.dart';
+import 'package:mino_chat/features/voice/presentation/widgets/voice_recorder_bar.dart';
 
 class ChatRoomScreen extends ConsumerStatefulWidget {
   final String chatId;
@@ -60,7 +60,7 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
     final text = _input.text.trim();
     if (text.isEmpty) return;
     _input.clear();
-    await ref.read(chatRoomProvider(widget.chatId).notifier).sendText(
+    await ref.read(chatRoomControllerProvider(widget.chatId).notifier).sendText(
       text,
       replyToId: _replyToId,
       replyToPreview: _replyToPreview,
@@ -92,7 +92,7 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
 
   Future<void> _pickFile() async {
     setState(() => _showAttach = false);
-    final result = await FilePicker.platform.pickFiles(allowMultiple: false);
+    final result = await FilePicker.pickFiles(allowMultiple: false);
     if (result == null || result.files.single.path == null) return;
     final f = File(result.files.single.path!);
     final mime = FileX.mime(f.path);
@@ -104,7 +104,7 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
   }
 
   Future<void> _sendAttachmentFile(File f, MessageKind kind, String? mime) async {
-    final me = ref.read(authControllerProvider).valueOrNull;
+    final me = ref.read(authControllerProvider).value;
     if (me == null) return;
     final bytes = await f.readAsBytes();
     final url = await ref.read(supabaseRepositoryProvider).uploadAttachment(
@@ -126,15 +126,15 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
       createdAt: DateTime.now(),
       status: MessageStatus.sending,
     );
-    await ref.read(chatRoomProvider(widget.chatId).notifier).sendAttachment(msg);
+    await ref.read(chatRoomControllerProvider(widget.chatId).notifier).sendAttachment(msg);
     _scrollToBottom();
   }
 
   @override
   Widget build(BuildContext context) {
-    final msgs = ref.watch(chatRoomProvider(widget.chatId));
-    final me = ref.watch(authControllerProvider).valueOrNull;
-    ref.listen(chatRoomProvider(widget.chatId), (_, __) => _scrollToBottom());
+    final msgs = ref.watch(chatRoomControllerProvider(widget.chatId));
+    final me = ref.watch(authControllerProvider).value;
+    ref.listen(chatRoomControllerProvider(widget.chatId), (_, __) => _scrollToBottom());
 
     return Scaffold(
       appBar: AppBar(
@@ -193,7 +193,7 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
                           isMine: me?.id == m.senderId,
                           showAvatar: showAvatar && !m.isDeleted,
                           onLongPress: () => _showActions(m),
-                          onReact: (emoji) => ref.read(chatRoomProvider(widget.chatId).notifier).react(m.id, emoji),
+                          onReact: (emoji) => ref.read(chatRoomControllerProvider(widget.chatId).notifier).react(m.id, emoji),
                         ),
                       ],
                     );
@@ -242,8 +242,7 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
                   _input.selection = TextSelection.fromPosition(TextPosition(offset: _input.text.length));
                 },
                 config: Config(
-                  backspaceColor: MinoColors.primary,
-                  emojiViewConfig: EmojiViewConfig(emojiSizeMax: 28),
+                                    emojiViewConfig: EmojiViewConfig(emojiSizeMax: 28),
                   categoryViewConfig: const CategoryViewConfig(tabIndicatorAnimDuration: Duration(milliseconds: 200)),
                 ),
               ),
@@ -284,7 +283,7 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
                 ),
                 onChanged: (v) {
                   // Typing indicator broadcasting
-                  final me = ref.read(authControllerProvider).valueOrNull;
+                  final me = ref.read(authControllerProvider).value;
                   if (me == null) return;
                   ref.read(supabaseRepositoryProvider).broadcastTyping(widget.chatId, me.id, v.isNotEmpty);
                 },
@@ -376,7 +375,7 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
                 _showReactPicker(m);
               },
             ),
-            if (m.senderId == ref.read(authControllerProvider).valueOrNull?.id) ...[
+            if (m.senderId == ref.read(authControllerProvider).value?.id) ...[
               ListTile(
                 leading: const Icon(Icons.edit),
                 title: const Text('Edit'),
@@ -387,7 +386,7 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
                 title: const Text('Delete', style: TextStyle(color: MinoColors.error)),
                 onTap: () {
                   Navigator.pop(context);
-                  ref.read(chatRoomProvider(widget.chatId).notifier).delete(m.id);
+                  ref.read(chatRoomControllerProvider(widget.chatId).notifier).delete(m.id);
                 },
               ),
             ],
@@ -409,7 +408,7 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
                 .map((e) => GestureDetector(
                       onTap: () {
                         Navigator.pop(context);
-                        ref.read(chatRoomProvider(widget.chatId).notifier).react(m.id, e);
+                        ref.read(chatRoomControllerProvider(widget.chatId).notifier).react(m.id, e);
                       },
                       child: Text(e, style: const TextStyle(fontSize: 28)),
                     ))

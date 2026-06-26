@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/theme/colors.dart';
-import '../../../data/models/user_model.dart';
-import '../../../data/repositories/supabase_repository.dart';
-import '../../auth/presentation/controllers/auth_controller.dart';
+import 'package:mino_chat/core/theme/colors.dart';
+import 'package:mino_chat/data/models/user_model.dart';
+import 'package:mino_chat/data/repositories/supabase_repository.dart';
+import 'package:mino_chat/features/auth/presentation/controllers/auth_controller.dart';
 import '../controllers/chat_controller.dart';
 
 /// Start a new chat — search by name or email, then tap to create a direct chat.
@@ -31,10 +31,10 @@ class _NewChatScreenState extends ConsumerState<NewChatScreen> {
   }
 
   Future<void> _open(MinoUser u) async {
-    final me = ref.read(authControllerProvider).valueOrNull;
+    final me = ref.read(authControllerProvider).value;
     if (me == null) return;
     final chat = await ref.read(supabaseRepositoryProvider).createDirectChat(me.id, u.id);
-    ref.read(chatListProvider.notifier).refresh();
+    ref.read(chatListControllerProvider.notifier).refresh();
     if (!mounted) return;
     context.pushReplacement('/chat/${chat.id}');
   }

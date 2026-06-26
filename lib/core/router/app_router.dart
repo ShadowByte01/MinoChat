@@ -2,25 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../features/auth/presentation/screens/splash_screen.dart';
-import '../../features/auth/presentation/screens/login_screen.dart';
-import '../../features/auth/presentation/screens/profile_setup_screen.dart';
-import '../../features/chat/presentation/screens/home_screen.dart';
-import '../../features/chat/presentation/screens/chat_room_screen.dart';
-import '../../features/chat/presentation/screens/new_chat_screen.dart';
-import '../../features/chat/presentation/screens/new_group_screen.dart';
-import '../../features/live/presentation/screens/live_list_screen.dart';
-import '../../features/live/presentation/screens/live_room_screen.dart';
-import '../../features/bluetooth/presentation/screens/ble_home_screen.dart';
-import '../../features/bluetooth/presentation/screens/ble_chat_screen.dart';
-import '../../features/stories/presentation/screens/story_viewer_screen.dart';
-import '../../features/stories/presentation/screens/story_camera_screen.dart';
-import '../../features/channels/presentation/screens/channels_screen.dart';
-import '../../features/channels/presentation/screens/channel_detail_screen.dart';
-import '../../features/profile/presentation/screens/profile_screen.dart';
-import '../../features/settings/presentation/screens/settings_screen.dart';
-import '../../features/calls/presentation/screens/call_screen.dart';
-import '../constants/app_constants.dart';
+import 'package:mino_chat/features/auth/presentation/screens/splash_screen.dart';
+import 'package:mino_chat/features/auth/presentation/screens/login_screen.dart';
+import 'package:mino_chat/features/auth/presentation/screens/profile_setup_screen.dart';
+import 'package:mino_chat/features/chat/presentation/screens/home_screen.dart';
+import 'package:mino_chat/features/chat/presentation/screens/chat_room_screen.dart';
+import 'package:mino_chat/features/chat/presentation/screens/new_chat_screen.dart';
+import 'package:mino_chat/features/chat/presentation/screens/new_group_screen.dart';
+import 'package:mino_chat/features/live/presentation/screens/live_list_screen.dart';
+import 'package:mino_chat/features/live/presentation/screens/live_room_screen.dart';
+import 'package:mino_chat/features/bluetooth/presentation/screens/ble_home_screen.dart';
+import 'package:mino_chat/features/bluetooth/presentation/screens/ble_chat_screen.dart';
+import 'package:mino_chat/features/stories/presentation/screens/story_viewer_screen.dart';
+import 'package:mino_chat/features/stories/presentation/screens/story_camera_screen.dart';
+import 'package:mino_chat/features/channels/presentation/screens/channels_screen.dart';
+import 'package:mino_chat/features/channels/presentation/screens/channel_detail_screen.dart';
+import 'package:mino_chat/features/profile/presentation/screens/profile_screen.dart';
+import 'package:mino_chat/features/settings/presentation/screens/settings_screen.dart';
+import 'package:mino_chat/features/calls/presentation/screens/call_screen.dart';
+import 'package:mino_chat/core/constants/app_constants.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   // Splash → if session: Home, else Login

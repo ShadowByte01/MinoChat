@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../core/theme/colors.dart';
-import '../../../data/repositories/supabase_repository.dart';
-import '../../../data/supabase/supabase_provider.dart';
+import 'package:mino_chat/core/theme/colors.dart';
+import 'package:mino_chat/data/repositories/supabase_repository.dart';
+import 'package:mino_chat/data/supabase/supabase_provider.dart';
 import '../controllers/auth_controller.dart';
 
 /// Profile setup — only shown the first time after Google sign-in.
@@ -25,7 +25,7 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
   @override
   void initState() {
     super.initState();
-    final u = ref.read(authControllerProvider).valueOrNull;
+    final u = ref.read(authControllerProvider).value;
     if (u != null) {
       _name.text = u.displayName;
       _bio.text = u.bio ?? '';

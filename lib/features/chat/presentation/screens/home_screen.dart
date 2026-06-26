@@ -1,3 +1,4 @@
+import 'package:mino_chat/features/chat/presentation/widgets/chat_tile.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -5,14 +6,14 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/theme/colors.dart';
-import '../../../core/utils/logger.dart';
-import '../../../data/models/chat_room_model.dart';
-import '../../../data/models/message_model.dart';
-import '../../../data/models/user_model.dart';
-import '../../../data/repositories/supabase_repository.dart';
-import '../../../data/supabase/supabase_provider.dart';
-import '../../auth/presentation/controllers/auth_controller.dart';
+import 'package:mino_chat/core/theme/colors.dart';
+import 'package:mino_chat/core/utils/logger.dart';
+import 'package:mino_chat/data/models/chat_room_model.dart';
+import 'package:mino_chat/data/models/message_model.dart';
+import 'package:mino_chat/data/models/user_model.dart';
+import 'package:mino_chat/data/repositories/supabase_repository.dart';
+import 'package:mino_chat/data/supabase/supabase_provider.dart';
+import 'package:mino_chat/features/auth/presentation/controllers/auth_controller.dart';
 import '../controllers/chat_controller.dart';
 import '../widgets/message_bubble.dart';
 
@@ -30,13 +31,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     // Refresh chat list whenever we land here
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(supabaseRepositoryProvider);
-      ref.read(chatListProvider.notifier).refresh();
+      ref.read(chatListControllerProvider.notifier).refresh();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final chats = ref.watch(chatListProvider);
+    final chats = ref.watch(chatListControllerProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Mino Chat'),
@@ -59,7 +60,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           final pinned = list.where((c) => c.isPinned).toList();
           final rest = list.where((c) => !c.isPinned).toList();
           return RefreshIndicator(
-            onRefresh: () => ref.read(chatListProvider.notifier).refresh(),
+            onRefresh: () => ref.read(chatListControllerProvider.notifier).refresh(),
             child: ListView(
               children: [
                 if (pinned.isNotEmpty) ...[
@@ -94,12 +95,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Widget _tile(ChatRoom c) {
-    final me = ref.watch(authControllerProvider).valueOrNull?.id;
+    final me = ref.watch(authControllerProvider).value?.id;
     final otherId = c.memberIds.firstWhere((id) => id != me, orElse: () => '');
     return Consumer(builder: (context, ref, _) {
       MinoUser? peer;
       if (c.isDirect && otherId.isNotEmpty) {
-        peer = ref.watch(_userCacheProvider(otherId)).valueOrNull;
+        peer = ref.watch(_userCacheProvider(otherId)).value;
       }
       return ChatTile(
         chat: c,
@@ -120,17 +121,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ListTile(
               leading: Icon(c.isPinned ? Icons.push_pin_outlined : Icons.push_pin),
               title: Text(c.isPinned ? 'Unpin' : 'Pin'),
-              onTap: () { ref.read(chatListProvider.notifier).pin(c, !c.isPinned); Navigator.pop(context); },
+              onTap: () { ref.read(chatListControllerProvider.notifier).pin(c, !c.isPinned); Navigator.pop(context); },
             ),
             ListTile(
               leading: Icon(c.isMuted ? Icons.volume_up : Icons.volume_off),
               title: Text(c.isMuted ? 'Unmute' : 'Mute'),
-              onTap: () { ref.read(chatListProvider.notifier).mute(c, !c.isMuted); Navigator.pop(context); },
+              onTap: () { ref.read(chatListControllerProvider.notifier).mute(c, !c.isMuted); Navigator.pop(context); },
             ),
             ListTile(
               leading: const Icon(Icons.archive_outlined),
               title: Text(c.isArchived ? 'Unarchive' : 'Archive'),
-              onTap: () { ref.read(chatListProvider.notifier).archive(c, !c.isArchived); Navigator.pop(context); },
+              onTap: () { ref.read(chatListControllerProvider.notifier).archive(c, !c.isArchived); Navigator.pop(context); },
             ),
           ],
         ),

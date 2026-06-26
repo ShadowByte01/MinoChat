@@ -18,7 +18,7 @@ import 'core/utils/logger.dart';
 
 Future<void> main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  flutter_native_splash.preserve(widgetsBinding: widgetsBinding);
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   try {
     await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -42,7 +42,7 @@ Future<void> main() async {
       log.w('Firebase init skipped: $e');
     }
 
-    flutter_native_splash.remove();
+    FlutterNativeSplash.remove();
     runApp(const ProviderScope(child: MinoChatApp()));
   } catch (e, st) {
     log.e('bootstrap failed', error: e, stackTrace: st);

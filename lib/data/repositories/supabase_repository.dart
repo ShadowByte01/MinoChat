@@ -4,13 +4,13 @@ import 'dart:typed_data';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../core/constants/app_constants.dart';
-import '../../core/errors/failures.dart';
-import '../../core/utils/logger.dart';
+import 'package:mino_chat/core/constants/app_constants.dart';
+import 'package:mino_chat/core/errors/failures.dart';
+import 'package:mino_chat/core/utils/logger.dart';
 import '../models/chat_room_model.dart';
 import '../models/message_model.dart';
 import '../models/user_model.dart';
-import 'supabase_provider.dart';
+import 'package:mino_chat/data/supabase/supabase_provider.dart';
 
 /// The single source of truth for all things Supabase.
 /// Each method returns typed data and converts errors into [MinoFailure].
@@ -22,7 +22,7 @@ class SupabaseRepository {
 
   Future<MinoUser> signInWithGoogleIdToken({
     required String idToken,
-    required String accessToken,
+    String? accessToken,
   }) async {
     try {
       final res = await _sb.auth.signInWithIdToken(
@@ -188,13 +188,11 @@ class SupabaseRepository {
     var q = _sb
         .from('messages')
         .select()
-        .eq('chat_id', chatId)
-        .order('created_at', ascending: false)
-        .limit(limit);
+        .eq('chat_id', chatId);
     if (before != null) {
       q = q.lt('created_at', before.toUtc().toIso8601String());
     }
-    final res = await q;
+    final res = await q.order('created_at', ascending: false).limit(limit);
     return (res as List)
         .map((m) => Message.fromMap(m as Map<String, dynamic>))
         .toList()
@@ -268,7 +266,7 @@ class SupabaseRepository {
     final ctl = StreamController<Message>();
     final sub = _sb
         .channel('messages:$chatId')
-        .onPostgresChange(
+        .onPostgresChanges(
           event: PostgresChangeEvent.insert,
           schema: 'public',
           table: 'messages',
@@ -287,7 +285,7 @@ class SupabaseRepository {
     final ctl = StreamController<ChatRoom>();
     final sub = _sb
         .channel('chat:$chatId')
-        .onPostgresChange(
+        .onPostgresChanges(
           event: PostgresChangeEvent.update,
           schema: 'public',
           table: 'chats',

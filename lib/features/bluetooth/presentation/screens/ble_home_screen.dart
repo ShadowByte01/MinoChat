@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../../../core/theme/colors.dart';
+import 'package:mino_chat/core/theme/colors.dart';
 import '../controllers/ble_mesh_controller.dart';
 
 /// Home of the offline mesh tab.

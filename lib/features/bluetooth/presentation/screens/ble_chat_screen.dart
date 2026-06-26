@@ -5,11 +5,11 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/constants/app_constants.dart';
-import '../../../core/theme/colors.dart';
-import '../../../core/utils/time.dart';
-import '../../../data/supabase/supabase_provider.dart';
-import '../../auth/presentation/controllers/auth_controller.dart';
+import 'package:mino_chat/core/constants/app_constants.dart';
+import 'package:mino_chat/core/theme/colors.dart';
+import 'package:mino_chat/core/utils/time.dart';
+import 'package:mino_chat/data/supabase/supabase_provider.dart';
+import 'package:mino_chat/features/auth/presentation/controllers/auth_controller.dart';
 import '../controllers/ble_mesh_controller.dart';
 
 class BleChatScreen extends ConsumerStatefulWidget {
@@ -55,7 +55,7 @@ class _BleChatScreenState extends ConsumerState<BleChatScreen> {
     final text = _input.text.trim();
     if (text.isEmpty) return;
     _input.clear();
-    final me = ref.read(authControllerProvider).valueOrNull?.displayName ?? 'me';
+    final me = ref.read(authControllerProvider).value?.displayName ?? 'me';
     setState(() => _msgs.add(_MeshMsg(from: me, text: text, ts: DateTime.now(), mine: true)));
     _scrollToBottom();
     try {
@@ -67,9 +67,9 @@ class _BleChatScreenState extends ConsumerState<BleChatScreen> {
   }
 
   Future<void> _pickFile() async {
-    final result = await FilePicker.platform.pickFiles(allowMultiple: false);
+    final result = await FilePicker.pickFiles(allowMultiple: false);
     if (result == null || result.files.single.path == null) return;
-    final me = ref.read(authControllerProvider).valueOrNull?.displayName ?? 'me';
+    final me = ref.read(authControllerProvider).value?.displayName ?? 'me';
     final f = File(result.files.single.path!);
     setState(() => _msgs.add(_MeshMsg(
       from: me,

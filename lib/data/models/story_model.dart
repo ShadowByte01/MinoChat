@@ -42,7 +42,7 @@ class Story extends Equatable {
     createdAt: DateTime.tryParse(m['created_at'] as String? ?? '')?.toLocal() ?? DateTime.now(),
     expiresAt: DateTime.tryParse(m['expires_at'] as String? ?? '')?.toLocal() ?? DateTime.now().add(const Duration(hours: 24)),
     viewedBy: (m['viewed_by'] as List<dynamic>?)?.cast<String>() ?? const [],
-    reactions: (m['reactions'] as Map<String, dynamic>?)?.cast<String>() ?? {},
+    reactions: (m['reactions'] as Map<String, dynamic>?)?.cast<String, String>() ?? {},
   );
 
   Map<String, dynamic> toMap() => {

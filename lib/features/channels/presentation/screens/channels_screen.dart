@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/theme/colors.dart';
-import '../../../data/models/channel_model.dart';
-import '../../../data/supabase/supabase_provider.dart';
+import 'package:mino_chat/core/theme/colors.dart';
+import 'package:mino_chat/data/models/channel_model.dart';
+import 'package:mino_chat/data/supabase/supabase_provider.dart';
 
 class ChannelsScreen extends ConsumerStatefulWidget {
   const ChannelsScreen({super.key});

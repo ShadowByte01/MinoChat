@@ -53,3 +53,13 @@ secrets.dart
 
 # Coverage
 coverage/
+
+# Release keys
+android/key.properties
+android/app/*.jks
+
+build/
+android/app/build/
+android/build/
+android/.cxx/
+android/app/.cxx/

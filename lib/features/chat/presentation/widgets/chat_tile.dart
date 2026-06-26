@@ -1,10 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '../../../core/theme/colors.dart';
-import '../../../core/utils/time.dart';
-import '../../../data/models/chat_room_model.dart';
-import '../../../data/models/user_model.dart';
+import 'package:mino_chat/core/theme/colors.dart';
+import 'package:mino_chat/core/utils/time.dart';
+import 'package:mino_chat/data/models/chat_room_model.dart';
+import 'package:mino_chat/data/models/user_model.dart';
 
 /// One row in the chat list.
 class ChatTile extends StatelessWidget {

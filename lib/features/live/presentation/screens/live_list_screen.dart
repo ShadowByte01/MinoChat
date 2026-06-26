@@ -1,10 +1,11 @@
+import 'package:mino_chat/data/supabase/supabase_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/theme/colors.dart';
-import '../../../data/models/live_room_model.dart';
-import '../../../data/repositories/supabase_repository.dart';
+import 'package:mino_chat/core/theme/colors.dart';
+import 'package:mino_chat/data/models/live_room_model.dart';
+import 'package:mino_chat/data/repositories/supabase_repository.dart';
 
 /// Live rooms list — discover active rooms, start a new one.
 class LiveListScreen extends ConsumerStatefulWidget {

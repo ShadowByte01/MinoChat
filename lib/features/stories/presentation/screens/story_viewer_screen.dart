@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/theme/colors.dart';
+import 'package:mino_chat/core/theme/colors.dart';
 
 class StoryViewerScreen extends ConsumerStatefulWidget {
   final String userId;

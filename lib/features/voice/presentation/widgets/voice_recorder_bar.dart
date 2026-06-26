@@ -9,13 +9,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:record/record.dart';
 import 'package:audioplayers/audioplayers.dart';
 
-import '../../../core/constants/app_constants.dart';
-import '../../../core/theme/colors.dart';
-import '../../../core/utils/logger.dart';
-import '../../../data/models/message_model.dart';
-import '../../../data/repositories/supabase_repository.dart';
-import '../../auth/presentation/controllers/auth_controller.dart';
-import '../../chat/presentation/controllers/chat_controller.dart';
+import 'package:mino_chat/core/constants/app_constants.dart';
+import 'package:mino_chat/core/theme/colors.dart';
+import 'package:mino_chat/core/utils/logger.dart';
+import 'package:mino_chat/data/models/message_model.dart';
+import 'package:mino_chat/data/repositories/supabase_repository.dart';
+import 'package:mino_chat/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:mino_chat/features/chat/presentation/controllers/chat_controller.dart';
 
 /// Press-and-hold mic to record, release to send.
 /// Tap (no hold) to enter locked recording mode.
@@ -81,7 +81,7 @@ class _VoiceRecorderBarState extends ConsumerState<VoiceRecorderBar> {
     final file = File(path);
     if (!await file.exists()) return;
     final bytes = await file.readAsBytes();
-    final me = ref.read(authControllerProvider).valueOrNull;
+    final me = ref.read(authControllerProvider).value;
     if (me == null) return;
     try {
       final url = await ref.read(supabaseRepositoryProvider).uploadVoiceNote(widget.chatId, Uint8List.fromList(bytes));
@@ -97,7 +97,7 @@ class _VoiceRecorderBarState extends ConsumerState<VoiceRecorderBar> {
         createdAt: DateTime.now(),
         status: MessageStatus.sending,
       );
-      await ref.read(chatRoomProvider(widget.chatId).notifier).sendAttachment(msg);
+      await ref.read(chatRoomControllerProvider(widget.chatId).notifier).sendAttachment(msg);
       widget.onSent();
     } catch (e, st) {
       log.e('voice upload', error: e, stackTrace: st);

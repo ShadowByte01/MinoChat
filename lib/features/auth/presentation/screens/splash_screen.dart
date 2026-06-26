@@ -3,9 +3,9 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/constants/app_constants.dart';
-import '../../../core/theme/colors.dart';
-import '../../../data/supabase/supabase_provider.dart';
+import 'package:mino_chat/core/constants/app_constants.dart';
+import 'package:mino_chat/core/theme/colors.dart';
+import 'package:mino_chat/data/supabase/supabase_provider.dart';
 import '../controllers/auth_controller.dart';
 
 /// First screen — minimal splash with logo + brand.

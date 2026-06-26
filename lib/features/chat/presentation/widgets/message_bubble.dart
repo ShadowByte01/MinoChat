@@ -1,9 +1,11 @@
+import 'package:mino_chat/core/constants/app_constants.dart';
+import 'package:mino_chat/core/utils/time.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-import '../../../core/theme/colors.dart';
-import '../../../core/utils/file_utils.dart';
-import '../../../data/models/message_model.dart';
+import 'package:mino_chat/core/theme/colors.dart';
+import 'package:mino_chat/core/utils/file_utils.dart';
+import 'package:mino_chat/data/models/message_model.dart';
 
 /// Single message bubble. Handles all [MessageKind] variants.
 class MessageBubble extends StatelessWidget {
@@ -144,6 +146,9 @@ class MessageBubble extends StatelessWidget {
 
   Widget _content() {
     switch (message.kind) {
+      case MessageKind.sticker:
+      case MessageKind.gif:
+        return const SizedBox();
       case MessageKind.text:
       case MessageKind.reply:
       case MessageKind.forwarded:

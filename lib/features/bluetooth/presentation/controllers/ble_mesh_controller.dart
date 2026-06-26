@@ -6,9 +6,9 @@ import 'dart:typed_data';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/constants/app_constants.dart';
-import '../../../core/errors/failures.dart';
-import '../../../core/utils/logger.dart';
+import 'package:mino_chat/core/constants/app_constants.dart';
+import 'package:mino_chat/core/errors/failures.dart';
+import 'package:mino_chat/core/utils/logger.dart';
 
 /// BLE peer discovered on the local mesh.
 class BlePeer {
@@ -85,7 +85,7 @@ class BleMeshController extends Notifier<List<BlePeer>> {
   Future<void> connectAndSubscribe(String deviceId) async {
     try {
       final device = BluetoothDevice.fromId(deviceId);
-      await device.connect(timeout: const Duration(seconds: 8));
+      await device.connect(license: License.nonprofit, timeout: const Duration(seconds: 8));
       final services = await device.discoverServices();
       for (final s in services) {
         if (s.uuid.str.toLowerCase() != Mino.bleServiceUuid) continue;

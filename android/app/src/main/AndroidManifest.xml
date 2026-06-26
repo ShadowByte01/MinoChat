@@ -1,5 +1,5 @@
-# Mino Chat — AndroidManifest
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.xhub.minochat"
     xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Network -->
@@ -77,7 +77,7 @@
     <uses-feature android:name="android.hardware.microphone" android:required="false" />
 
     <application
-        android:name="${applicationName}"
+        android:name="android.app.Application"
         android:label="Mino Chat"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -133,7 +133,6 @@
             android:exported="false"
             android:foregroundServiceType="dataSync"
             tools:targetApi="34" />
-
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />

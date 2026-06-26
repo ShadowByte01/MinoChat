@@ -81,7 +81,7 @@ class Message extends Equatable {
     replyToId: m['reply_to_id'] as String?,
     replyToPreview: m['reply_to_preview'] as String?,
     forwardedFromId: m['forwarded_from_id'] as String?,
-    reactions: (m['reactions'] as Map<String, dynamic>?)?.cast<String>() ?? {},
+    reactions: (m['reactions'] as Map<String, dynamic>?)?.cast<String, String>() ?? {},
     readBy: (m['read_by'] as List<dynamic>?)?.cast<String>() ?? const [],
     deliveredTo: (m['delivered_to'] as List<dynamic>?)?.cast<String>() ?? const [],
     status: MessageStatus.values.firstWhere(
