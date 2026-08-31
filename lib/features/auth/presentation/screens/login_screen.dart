@@ -9,73 +9,129 @@ import '../controllers/auth_controller.dart';
 
 /// Login screen — Google Sign-In only.
 /// Big primary CTA, tiny credit at the bottom.
-class LoginScreen extends ConsumerWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends ConsumerState<LoginScreen> {
+  bool _isRemoveLoginOn = false;
+
+  @override
+  Widget build(BuildContext context) {
     final auth = ref.watch(authControllerProvider);
 
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const Spacer(flex: 2),
-              Center(
-                child: Image.asset('assets/images/logo.png', width: 116, height: 116),
-              ).animate().scale(duration: 500.ms, begin: const Offset(0.8, 0.8), end: const Offset(1, 1)),
-              const SizedBox(height: 20),
-              Text('Welcome to ${Mino.appName}',
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 26,
-                  fontWeight: FontWeight.w800,
-                  color: MinoColors.onBackground,
-                ),
-              ).animate().fade(delay: 200.ms).slideY(begin: 0.2, end: 0),
-              const SizedBox(height: 8),
-              const Text(
-                'Sign in with Google to start chatting, calling, going live, and sharing — online or completely offline.',
-                textAlign: TextAlign.center,
-                style: TextStyle(color: MinoColors.muted, fontSize: 14, height: 1.5),
-              ).animate().fade(delay: 300.ms),
-              const Spacer(flex: 3),
-              _GoogleButton(
-                loading: auth.isLoading,
-                onPressed: () async {
-                  await ref.read(authControllerProvider.notifier).signInWithGoogle();
-                  final u = ref.read(authControllerProvider).value;
-                  if (u != null) {
-                    if (u.displayName.isEmpty || u.displayName == u.email?.split('@').first) {
-                      context.go('/profile-setup');
-                    } else {
-                      context.go('/home');
-                    }
-                  }
-                },
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Spacer(flex: 2),
+                  Center(
+                    child: Image.asset('assets/images/logo.png', width: 116, height: 116),
+                  ).animate().scale(duration: 500.ms, begin: const Offset(0.8, 0.8), end: const Offset(1, 1)),
+                  const SizedBox(height: 20),
+                  Text('Welcome to ${Mino.appName}',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.w800,
+                      color: MinoColors.onBackground,
+                    ),
+                  ).animate().fade(delay: 200.ms).slideY(begin: 0.2, end: 0),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Sign in with Google to start chatting, calling, going live, and sharing — online or completely offline.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: MinoColors.muted, fontSize: 14, height: 1.5),
+                  ).animate().fade(delay: 300.ms),
+                  const Spacer(flex: 3),
+                  _GoogleButton(
+                    loading: auth.isLoading,
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Sign-in is currently disabled because we have stopped working on this project.')),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 18),
+                  const Text(
+                    'By continuing you agree to our Terms & Privacy.\nMino Chat is open source — MIT licensed.\n\nNote: Sign-in is currently disabled because we have stopped working on this project.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: MinoColors.muted, fontSize: 11, height: 1.5),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Made by ${Mino.author} · ${Mino.owner}',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: MinoColors.muted,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const Spacer(),
+                ],
               ),
-              const SizedBox(height: 18),
-              Text(
-                'By continuing you agree to our Terms & Privacy.\nMino Chat is open source — MIT licensed.',
-                textAlign: TextAlign.center,
-                style: const TextStyle(color: MinoColors.muted, fontSize: 11, height: 1.5),
+            ),
+            Positioned(
+              top: 16,
+              right: 16,
+              child: Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (ctx) => AlertDialog(
+                          title: const Text('Warning'),
+                          content: const Text(
+                              'We have it: this is only for the developers who are taking this for developing their own chat as a base. You don\'t need to sign in or name it.'),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(ctx),
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      'Remove Login',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: MinoColors.primary,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        _isRemoveLoginOn = !_isRemoveLoginOn;
+                      });
+                      if (_isRemoveLoginOn) {
+                        context.go('/home');
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: _isRemoveLoginOn ? MinoColors.primary : Colors.grey.shade300,
+                      foregroundColor: _isRemoveLoginOn ? Colors.white : Colors.black87,
+                      elevation: 0,
+                    ),
+                    child: Text(_isRemoveLoginOn ? 'Turn Off' : 'Turn On'),
+                  ),
+                ],
               ),
-              const SizedBox(height: 8),
-              Text(
-                'Made by ${Mino.author} · ${Mino.owner}',
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: MinoColors.muted,
-                  fontSize: 11,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const Spacer(),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

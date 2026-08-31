@@ -63,3 +63,5 @@ android/app/build/
 android/build/
 android/.cxx/
 android/app/.cxx/
+# Widget Preview related
+.widget_preview/
